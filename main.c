@@ -61,16 +61,15 @@ int maxDirection(int state) {
             index++;
         }
     }
-    // srand(time(0));
     int select_index = (rand() % count);
     m = ar_random_direction[select_index];
-
 
     return m;
 }
 
 int qValueUpdate(int state, int direction) {
     int directionArray[4] = {-4, 1, -1, 4};
+    //directionArray i statelerin kaç birim ötelendiğini eleman olarak tutuyor. Böylece kodumuz çok kısaldı.
 
     int newState = state;
     int i = 0;
@@ -81,7 +80,8 @@ int qValueUpdate(int state, int direction) {
         }
     }
 
-    if (newState > 15 || newState < 0 || (((state % 4) == 0) && direction == 2) ||
+    if (state == 15 || newState > 15 || newState < 0 || (((state % 4) == 0) && direction == 2) ||
+    //Agent ın hareket edemeyeceği yani etmemesi gereken durumlarda aynı olduğumuz state i return ederiz.
         (((state % 4) == 3) && direction == 1)) {
         qTable[state][direction] = qTable[state][direction] + alpha * (rewardTable[state][direction]
                                                                        + gama * maxQ(state) -
@@ -97,15 +97,13 @@ int qValueUpdate(int state, int direction) {
 }
 
 double randomDouble(double low, double high) {
-
-    // srand(time(0));
     return ((double) rand() * (high - low)) / (double) RAND_MAX + low;
 }
 
 int main() {
-    int i, j = 0;
     srand(time(0));
 
+    int i, j = 0;
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 4; j++) {
             qTable[i][j] = 0;
